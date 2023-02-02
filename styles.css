@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto Mono', monospace;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: antiquewhite;
+}
+
+.calc-container {
+  display: grid;
+  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-columns: auto auto auto auto;
+  gap: 1em;
+  padding: 1em;
+  background-color: royalblue;
+}
+
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.item2 {
+  grid-row: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.item3 {
+  grid-row: 2;
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.item4 {
+  grid-row: 2;
+}
+
+.item5, .item6, .item7, .item8 {
+  grid-row: 3;
+}
+
+.item9, .item10, .item11, .item12 {
+  grid-row: 4;
+}
+
+.item13, .item14, .item15, .item16 {
+  grid-row: 5;
+}
+
+.item19 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
