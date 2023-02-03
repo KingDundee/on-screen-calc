@@ -120,7 +120,7 @@ div#display p {
   border-color: plum;
 }
 
-button.operand, button#decimal {
+button.operand, button.float {
   background-color: lightgoldenrodyellow;
   border-color: antiquewhite;
 }
@@ -131,14 +131,12 @@ button.operator {
   color: antiquewhite;
 }
 
-button#clear {
-  background-color: red;
-  border-color: red;
+button.clear-entry {
+  background-color: rgb(179, 57, 57);
+  border-color: rgb(179, 57, 57);
 }
 
-button#delete {
+button.backspace {
   background-color: darkorange;
   border-color: darkorange;
 }
-
-/* FIX :hover bug for CE, DEL, and decimal buttons */
