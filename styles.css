@@ -91,6 +91,7 @@ footer p {
 
 div#display {
   min-height: 120px;
+  width: 400px; /* for overflow property */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -102,6 +103,7 @@ div#display {
   margin-bottom: 2em;
   color: black;
   box-shadow: inset 2px 4px;
+  overflow: hidden;
 }
 
 div#display p {
@@ -118,6 +120,7 @@ div#display p {
 .calc-container button:hover {
   background-color: plum;
   border-color: plum;
+  scale: 1.1;
 }
 
 button.operand, button.float {
