@@ -111,21 +111,41 @@ const setOperator = function(e) {
   calculator.lastInput = calculator.currentInput; // capture previous input value before getting new input value
   switch (e.target.id) {
     case 'add':
+      // check for chained operation
+      if (calculator.currentOperator !== '') {
+        getResult();
+      }
+
       calculator['currentInput'] = '+';
       setDisplay(calculator.currentInput);
       calculator['currentOperator'] = '+';
       break;
     case 'subtract':
+      // check for chained operation
+      if (calculator.currentOperator !== '') {
+        getResult();
+      }
+
       calculator['currentInput'] = '-';
       setDisplay(calculator.currentInput);
       calculator['currentOperator'] = '-';
       break;
     case 'multiply':
+      // check for chained operation
+      if (calculator.currentOperator !== '') {
+        getResult();
+      }
+
       calculator['currentInput'] = '✕';
       setDisplay(calculator.currentInput);
       calculator['currentOperator'] = '✕';
       break;
     case 'divide':
+      // check for chained operation
+      if (calculator.currentOperator !== '') {
+        getResult();
+      }
+      
       calculator['currentInput'] = '÷';
       setDisplay(calculator.currentInput);
       calculator['currentOperator'] = '÷';
@@ -133,12 +153,11 @@ const setOperator = function(e) {
     case 'equals':
       calculator['currentInput'] = '=';
       setDisplay(calculator.currentInput);
-      // calculator['currentOperator'] = '='; // LEAVE THIS OUT FOR NOW
 
       getResult();
 
       break;
-  } // need a way to flush out the current operator once an equals operation is carried out
+  } // need a way to flush out the current operator once an equals operation is carried out (MAY BE OK ACTUALLY)
 };
 //---------------------------------------------------------------------------------
 const clearDisplay = function() {
@@ -170,7 +189,8 @@ const getResult = function() {
       calculator.dispLine1 = operate(divide, operandA, operandB);
       break;
   }
-  calculator.result = calculator.dispLine1; // store previous result if operations chained
+  calculator.result = calculator.dispLine1; // store previous result if operations chained (MAY NOT NEED as the above works fine)
+  calculator['currentOperator'] = ''; // flush out the current operator using explicit equals operation
 };
 //---------------------------------------------------------------------------------
 const parseExpression = function(displayExpression) {
@@ -207,3 +227,14 @@ operatorButtons.forEach((operatorButton) => {
 
 clearButton.addEventListener('click', clearDisplay);
 //---------------------------------------------------------------------------------
+
+
+// notes to self for next session
+/*
+-division by zero issue warning, etc
+-repeated decimals (scan first and second operands for more than one instance of '.')
+-expression can't start with an operator or '=' and or be followed by another operator / decimal
+-cap the decimal value of first & second operands as well as the result
+-cap the expression length
+-figure out logic for delete/backspace function
+*/
