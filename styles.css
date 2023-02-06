@@ -109,7 +109,6 @@ div#display {
 div#display p {
   font-family: 'Inconsolata', monospace;
   text-align: right;
-  font-size: 2em;
 }
 
 .calc-container button {
@@ -142,4 +141,14 @@ button.clear-entry {
 button.backspace {
   background-color: darkorange;
   border-color: darkorange;
+}
+
+p.disp-line1 {
+  color: darkgreen;
+  font-size: 3em;
+}
+
+p.disp-line2 {
+  color: darkred;
+  font-size: 2em;
 }
