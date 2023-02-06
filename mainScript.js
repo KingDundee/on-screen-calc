@@ -53,6 +53,14 @@ const calculator = {
 };
 //---------------------------------------------------------------------------------
 const setDisplay = function(inputValue) {
+  // check expression length under max
+  let maxExpressionLength = 15;
+  if (calculator.dispLine1.length === maxExpressionLength) {
+    clearDisplay();
+    calculator.dispLine2 = 'Length limit reached!';
+    return;
+  }
+
   calculator.dispLine1 += inputValue;
   calculator.dispLine2 = inputValue;
 };
@@ -108,11 +116,18 @@ const getInput = function(e) {
 };
 //---------------------------------------------------------------------------------
 const setOperator = function(e) {
+  // check for repeating math operators
+  if (calculator.currentInput === '+' || calculator.currentInput === '-' || calculator.currentInput === '✕' || calculator.currentInput === '÷') {
+    clearDisplay();
+    calculator.dispLine2 = 'Syntax error!';
+    return;
+  }
+
   calculator.lastInput = calculator.currentInput; // capture previous input value before getting new input value
   switch (e.target.id) {
     case 'add':
       // check for chained operation
-      if (calculator.currentOperator !== '') {
+      if (calculator.currentOperator !== '' && typeof +calculator.lastInput === 'number') {
         getResult();
       }
 
@@ -122,7 +137,7 @@ const setOperator = function(e) {
       break;
     case 'subtract':
       // check for chained operation
-      if (calculator.currentOperator !== '') {
+      if (calculator.currentOperator !== '' && typeof +calculator.lastInput === 'number') {
         getResult();
       }
 
@@ -131,8 +146,13 @@ const setOperator = function(e) {
       calculator['currentOperator'] = '-';
       break;
     case 'multiply':
+      // check if expression empty first
+      if (calculator.dispLine1 === '') {
+        calculator.dispLine2 = 'Syntax error!';
+        return;
+      }
       // check for chained operation
-      if (calculator.currentOperator !== '') {
+      if (calculator.currentOperator !== '' && typeof +calculator.lastInput === 'number') {
         getResult();
       }
 
@@ -141,23 +161,34 @@ const setOperator = function(e) {
       calculator['currentOperator'] = '✕';
       break;
     case 'divide':
+      // check if expression empty first
+      if (calculator.dispLine1 === '') {
+        calculator.dispLine2 = 'Syntax error!';
+        return;
+      }
       // check for chained operation
-      if (calculator.currentOperator !== '') {
+      if (calculator.currentOperator !== '' && typeof +calculator.lastInput === 'number') {
         getResult();
       }
-      
+
       calculator['currentInput'] = '÷';
       setDisplay(calculator.currentInput);
       calculator['currentOperator'] = '÷';
       break;
     case 'equals':
+      // check if expression empty first
+      if (calculator.dispLine1 === '') {
+        calculator.dispLine2 = 'Syntax error!';
+        return;
+      }
+
       calculator['currentInput'] = '=';
       setDisplay(calculator.currentInput);
 
       getResult();
 
       break;
-  } // need a way to flush out the current operator once an equals operation is carried out (MAY BE OK ACTUALLY)
+  }
 };
 //---------------------------------------------------------------------------------
 const clearDisplay = function() {
@@ -171,46 +202,85 @@ const clearDisplay = function() {
   calculator.result = '';
 };
 //---------------------------------------------------------------------------------
+const checkRepeatDecimal = function(firstOperand, secondOperand, char) {
+  let targetChar = char;
+  let charCountFirst = firstOperand.split('').filter(c => c === targetChar).length;
+  let charCountSecond = secondOperand.split('').filter(c => c === targetChar).length;
+  
+  if (charCountFirst > 1 || charCountSecond > 1) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+//---------------------------------------------------------------------------------
 const getResult = function() {
   parseExpression(calculator.dispLine1);
+
+  // check for repeating decimals in operands first
+  let repeatDecimal = checkRepeatDecimal(calculator.firstOperand, calculator.secondOperand, '.');
+  if (repeatDecimal) {
+    clearDisplay();
+    calculator.dispLine2 = 'Syntax error!';
+    return;
+  }
+
   let operandA = +calculator.firstOperand;
   let operandB = +calculator.secondOperand;
+
+  let decimalPlaces = 2;
+
   switch (calculator.currentOperator) {
     case '+':
-      calculator.dispLine1 = operate(add, operandA, operandB);
+      calculator.dispLine1 = parseFloat((operate(add, operandA, operandB)).toFixed(decimalPlaces));
       break;
     case '-':
-      calculator.dispLine1 = operate(subtract, operandA, operandB);
+      calculator.dispLine1 = parseFloat((operate(subtract, operandA, operandB)).toFixed(decimalPlaces));
       break;
     case '✕':
-      calculator.dispLine1 = operate(multiply, operandA, operandB);
+      calculator.dispLine1 = parseFloat((operate(multiply, operandA, operandB)).toFixed(decimalPlaces));
       break;
     case '÷':
-      calculator.dispLine1 = operate(divide, operandA, operandB);
+      // check for division by zero
+      if (operandB === 0) {
+        clearDisplay();
+        calculator.dispLine2 = 'Division by zero!';
+        return;
+      }
+
+      calculator.dispLine1 = parseFloat((operate(divide, operandA, operandB)).toFixed(decimalPlaces));
       break;
   }
-  calculator.result = calculator.dispLine1; // store previous result if operations chained (MAY NOT NEED as the above works fine)
-  calculator['currentOperator'] = ''; // flush out the current operator using explicit equals operation
+  calculator.result = calculator.dispLine1; // REQUIRED?
+  calculator['currentOperator'] = ''; // flush current operator when using explicit equals operation
 };
 //---------------------------------------------------------------------------------
 const parseExpression = function(displayExpression) {
-  let splitChar1;
-  let splitChar2 = '=';
+  let splitChar;
+
+  // check if a math operator is present before parsing
+  if (calculator.currentOperator === '') {
+    clearDisplay();
+    calculator.dispLine2 = 'Syntax error!';
+    return;
+  }
+
   switch (calculator.currentOperator) {
     case '+':
-      splitChar1 = '+';
+      splitChar = '+';
       break;
     case '-':
-      splitChar1 = '-';
+      splitChar = '-';
       break;
     case '✕':
-      splitChar1 = '✕';
+      splitChar = '✕';
       break;
     case '÷':
-      splitChar1 = '÷';
+      splitChar = '÷';
       break;
   }
-  let operandsA = displayExpression.split(splitChar1);
+  let operandsA = displayExpression.split(splitChar);
   calculator.firstOperand = operandsA[0];
 
   let operandsB = operandsA[1].split('=');
@@ -227,14 +297,3 @@ operatorButtons.forEach((operatorButton) => {
 
 clearButton.addEventListener('click', clearDisplay);
 //---------------------------------------------------------------------------------
-
-
-// notes to self for next session
-/*
--division by zero issue warning, etc
--repeated decimals (scan first and second operands for more than one instance of '.')
--expression can't start with an operator or '=' and or be followed by another operator / decimal
--cap the decimal value of first & second operands as well as the result
--cap the expression length
--figure out logic for delete/backspace function
-*/
