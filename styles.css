@@ -17,7 +17,7 @@ body {
   overflow: hidden;
   background-color: antiquewhite;
   background-image: linear-gradient(to bottom right, #ef4136, #fbb040);
-  padding-top: 2em;
+  padding-top: 2vh;
 }
 
 footer {
@@ -37,8 +37,8 @@ footer p {
 }
 
 .calc-container {
-  min-width: 30em;
-  min-height: 45em;
+  min-width: 55vh;
+  min-height: 80vh;
   display: grid;
   justify-content: center;
   grid-template-rows: 30% auto auto auto auto auto;
@@ -90,8 +90,8 @@ footer p {
 }
 
 div#display {
-  min-height: 120px;
-  width: 400px; /* for overflow property */
+  min-height: 20vh;
+  width: 45vh; /* for overflow property */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
