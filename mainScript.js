@@ -117,7 +117,7 @@ const getInput = function(e) {
 //---------------------------------------------------------------------------------
 const setOperator = function(e) {
   // check for repeating math operators
-  if (calculator.currentInput === '+' || calculator.currentInput === '-' || calculator.currentInput === '✕' || calculator.currentInput === '÷') {
+  if (calculator.currentInput === '+' || calculator.currentInput === '-' || calculator.currentInput === '×' || calculator.currentInput === '÷') {
     clearDisplay();
     calculator.dispLine2 = 'Syntax error!';
     return;
@@ -156,9 +156,9 @@ const setOperator = function(e) {
         getResult();
       }
 
-      calculator['currentInput'] = '✕';
+      calculator['currentInput'] = '×';
       setDisplay(calculator.currentInput);
-      calculator['currentOperator'] = '✕';
+      calculator['currentOperator'] = '×';
       break;
     case 'divide':
       // check if expression empty first
@@ -238,7 +238,7 @@ const getResult = function() {
     case '-':
       calculator.dispLine1 = parseFloat((operate(subtract, operandA, operandB)).toFixed(decimalPlaces));
       break;
-    case '✕':
+    case '×':
       calculator.dispLine1 = parseFloat((operate(multiply, operandA, operandB)).toFixed(decimalPlaces));
       break;
     case '÷':
@@ -273,8 +273,8 @@ const parseExpression = function(displayExpression) {
     case '-':
       splitChar = '-';
       break;
-    case '✕':
-      splitChar = '✕';
+    case '×':
+      splitChar = '×';
       break;
     case '÷':
       splitChar = '÷';
