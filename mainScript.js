@@ -332,3 +332,46 @@ calculator.dispLine1 = calculator.dispLine1.slice(0, -1);
 //---------------------------------------------------------------------------------
 deleteButton.addEventListener('click', deleteValue);
 //---------------------------------------------------------------------------------
+// keyboard support
+document.addEventListener('keydown', handleKeydown);
+// handle the keydown event
+function handleKeydown(event) {
+  // get the key that was pressed
+  let key = event.key;
+  console.log(key); // test
+
+  operandButtons.forEach((button) => {
+    if (button.textContent === key) {
+      button.click();
+    }
+    else if (button.id === 'decimal' && key === '.') {
+      button.click();
+    }
+  });
+
+  operatorButtons.forEach((button) => {
+    if (button.id === 'add' && key === '+') {
+      button.click()
+    }
+    else if (button.id === 'subtract' && key === '-') {
+      button.click();
+    }
+    else if (button.id === 'multiply' && key === '*') {
+      button.click();
+    }
+    else if (button.id === 'divide' && key === '/') {
+      button.click();
+    }
+    else if (button.id === 'equals' && key === 'Enter') {
+      button.click();
+    }
+  });
+  
+  if (key === 'Backspace') {
+    deleteButton.click();
+  }
+  else if (key === 'Escape') {
+    clearButton.click();
+  }
+}
+//---------------------------------------------------------------------------------
