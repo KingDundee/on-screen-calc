@@ -54,7 +54,7 @@ const calculator = {
 //---------------------------------------------------------------------------------
 const setDisplay = function(inputValue) {
   // check expression length under max
-  let maxExpressionLength = 15;
+  let maxExpressionLength = 14;
   if (calculator.dispLine1.length === maxExpressionLength) {
     clearDisplay();
     calculator.dispLine2 = 'Length limit reached!';
