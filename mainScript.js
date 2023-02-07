@@ -297,3 +297,38 @@ operatorButtons.forEach((operatorButton) => {
 
 clearButton.addEventListener('click', clearDisplay);
 //---------------------------------------------------------------------------------
+const deleteValue = function() {
+calculator.dispLine1 = calculator.dispLine1.slice(0, -1);
+  // update current/last input values & displays to reflect step(s) back
+  if (calculator.dispLine1.length === 0) {
+    calculator.lastInput = '';
+    calculator.currentInput = '';
+
+    calculator.dispLine2 = '';
+    calculator.currentOperator = ''; // flush operator
+  }
+  else if (calculator.dispLine1.length === 1) {
+    calculator.lastInput = '';
+    calculator.currentInput = calculator.dispLine1[calculator.dispLine1.length - 1];
+
+    calculator.dispLine2 = calculator.dispLine1[calculator.dispLine1.length - 1];
+    calculator.currentOperator = ''; // flush operator
+  }
+  else {
+    calculator.currentInput = calculator.dispLine1[calculator.dispLine1.length - 1];
+    calculator.lastInput = calculator.dispLine1[calculator.dispLine1.length - 2];
+
+    calculator.dispLine2 = calculator.dispLine1[calculator.dispLine1.length - 1];
+
+    // check if a math operator is present in the string
+    let mathOperators = ['+', '-', '×', '÷'];
+    let countOperators = calculator.dispLine1.split('').filter(value => mathOperators.includes(value)).length;
+    console.log(countOperators);
+    if (countOperators === 0) {
+      calculator.currentOperator = '';
+    }
+  }
+};
+//---------------------------------------------------------------------------------
+deleteButton.addEventListener('click', deleteValue);
+//---------------------------------------------------------------------------------
